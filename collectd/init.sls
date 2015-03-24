@@ -26,3 +26,6 @@ collectd:
     - template: jinja
     - watch_in:
       - service: collectd-service
+
+/usr/share/collectd/python:
+  file.directory
