@@ -6,6 +6,9 @@
         'plugindirconfig': '/etc/collectd/plugins',
         'service': 'collectd',
         'TypesDB': ['/usr/share/collectd/types.db'],
+        'moduledirconfig': '/usr/share/collectd/modules',
+        'user': 'root',
+        'group': 'root',
     },
     'RedHat': {
         'config': '/etc/collectd.conf',
@@ -13,47 +16,80 @@
         'plugindirconfig': '/etc/collectd.d',
         'service': 'collectd',
         'TypesDB': ['/usr/share/collectd/types.db'],
+        'moduledirconfig': '/usr/share/collectd/modules',
+        'user': 'root',
+        'group': 'root',
+    },
+    'FreeBSD': {
+        'config': '/usr/local/etc/collectd.conf',
+        'pkg': 'collectd5',
+        'plugindirconfig': '/usr/local/etc/collectd.d',
+        'service': 'collectd',
+        'TypesDB': ['/usr/local/share/collectd/types.db'],
+        'moduledirconfig': '/usr/local/share/collectd/modules',
+        'user': 'root',
+        'group': 'wheel',
     },
 }, merge=salt['pillar.get']('collectd:lookup')) %}
 
 {# Settings dictionary with default values #}
 {% set default_settings = {
     'collectd': {
-        'default_plugins': [
-            'battery',
-            'cpu',
-            'entropy',
-            'load',
-            'memory',
-            'swap',
-            'tcpconns',
-            'users'
-        ],
+        'Hostname': salt['grains.get']('fqdn'),
+        'Interval': 10,
+        'Timeout': 2,
+        'ReadThreads': 5,
+        'WriteQueueLimitHigh': 2000000,
+        'WriteQueueLimitLow': 1800000,
+        'CollectInternalStats': 'false',
         'FQDNLookup': 'false',
         'plugins': {
+            'default': [
+                'battery',
+                'cpu',
+                'entropy',
+                'load',
+                'memory',
+                'swap',
+                'users'
+            ],
             'apache': {
-                'host': salt['grains.get']('host')
+                'instances' : [ {
+                        'name': 'name',
+                        'url': 'http://' + salt['grains.get']('host') + '/server-status?auto',
+                        'verifypeer': 'false',
+                        'verifyhost': 'false',
+                        'server': 'apache'
+                    }
+                ]
             },
             'df': {
+                'Devices': [],
                 'IgnoreSelected': 'false',
                 'ReportByDevice': 'false',
                 'ReportReserved': 'false',
-                'ReportInodes': 'false'
+                'ReportInodes': 'false',
+                'ValuesPercentage': 'false'
             },
             'disk': {
-                'matches': []
+                'matches': [],
+                'IgnoreSelected': 'false'
             },
             'enable': false,
             'ethstat': {
                 'interface': 'eth0'
             },
             'interface': {
-                'interface': 'eth0',
+                'interfaces': ['eth0'],
                 'IgnoreSelected': 'false'
             },
             'java': {
                 'host': 'localhost',
                 'port': '17264',
+            },
+            'md': {
+                'Devices': [],
+                'IgnoreSelected': 'true'
             },
             'mysql': {
                 'databases': []
@@ -86,7 +122,30 @@
                 'loglevel': 'info'
             },
             'write_graphite': {
-                'node': salt['grains.get']('fqdn')
+                'host': salt['grains.get']('fqdn'),
+                'port': 2003,
+                'prefix': 'collectd',
+                'postfix': ''
+            },
+            'python': {
+                'Globals': 'true'
+            },
+            'elasticsearch': {
+            	'host': 'localhost',
+            	'port': 9200,
+            	'cluster': 'elasticsearch',
+            	'version': '1.0',
+            	'verbose': 0
+            },
+            'redis_info': {
+            	'host': 'localhost',
+            	'port': 6379,
+            	'verbose': 0
+            },
+            'rrdtool': {
+                'datadir': '/var/lib/collectd/rrd',
+                'cacheflush': 120,
+                'writespersecond': 50 
             }
         }
     }

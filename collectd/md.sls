@@ -3,9 +3,9 @@
 include:
   - collectd
 
-{{ collectd_settings.plugindirconfig }}/interface.conf:
+{{ collectd_settings.plugindirconfig }}/md.conf:
   file.managed:
-    - source: salt://collectd/files/interface.conf
+    - source: salt://collectd/files/md.conf
     - user: {{ collectd_settings.user }}
     - group: {{ collectd_settings.group }}
     - mode: 644

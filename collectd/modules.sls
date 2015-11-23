@@ -3,12 +3,12 @@
 include:
   - collectd
 
-{{ collectd_settings.plugindirconfig }}/interface.conf:
-  file.managed:
-    - source: salt://collectd/files/interface.conf
+{{ collectd_settings.moduledirconfig }}:
+  file.recurse:
+    - source: salt://collectd/modules/files
     - user: {{ collectd_settings.user }}
     - group: {{ collectd_settings.group }}
-    - mode: 644
-    - template: jinja
+    - file_mode: 644
+    - dir_mode: 755
     - watch_in:
       - service: collectd-service
