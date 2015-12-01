@@ -1,5 +1,7 @@
 include:
   - collectd
+  - collectd.python
+
 
 /usr/share/collectd/python/elasticsearch.py:
   file.managed:
@@ -13,10 +15,6 @@ include:
   file.managed:
     - source: salt://collectd/files/elasticsearch.conf
 {% from "collectd/map.jinja" import collectd_settings with context %}
-
-include:
-  - collectd
-  - collectd.python
 
 collectd-elasticsearch-module:
   pip.installed:
