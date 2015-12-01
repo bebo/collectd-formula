@@ -11,9 +11,11 @@ include:
     - require:
       - file: /usr/share/collectd/python
 
-/etc/collectd/plugins/elasticsearch.conf:
-  file.managed:
-    - source: salt://collectd/files/elasticsearch.conf
+#/etc/collectd/plugins/elasticsearch.conf:
+#  file.managed:
+#    - source: salt://collectd/files/elasticsearch.conf
+#
+
 {% from "collectd/map.jinja" import collectd_settings with context %}
 
 collectd-elasticsearch-module:
