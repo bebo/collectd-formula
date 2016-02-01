@@ -79,6 +79,22 @@ Enables and configures the interface plugin.
 
 Enables and configures the java plugin.
 
+Requires the installation of JDK.
+
+Pillar values used under `collectd.plugins.java`, an example ::
+
+
+    collectd:
+      plugins:
+        java:
+          host: localhost
+          port: 39999
+          user: 'someuser' (optional)
+          group: 'someuser' (optional)
+          lib: '/some/file' (optional)
+
+
+
 ``collectd.modules``
 --------------------
 
@@ -119,15 +135,30 @@ This state is used to install OS packages collectd plugins depend on.
 
 Enables and configures the postgresql plugin. Needs refinement.
 
+``collectd.powerdns``
+-----------------------
+
+Enables and configures the powerdns plugin.
+
 ``collectd.syslog``
 -------------------
 
 Enables and configures the syslog plugin.
 
+``collectd.tail``
+-------------------
+
+Enables and configures the tail plugin.
+
 ``collectd.python``
 -------------------
 
 Enables and configures the python plugin, which allows executiong arbitrary python scripts.
+
+``collectd.librato``
+------------
+
+Enables and configures write_http plugin for reporting to Librato
 
 Usage
 =====

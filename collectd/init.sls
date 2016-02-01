@@ -32,3 +32,13 @@ collectd:
 
 /usr/share/collectd/python:
   file.directory
+
+{{ collectd_settings.plugindirconfig }}/default.conf:
+  file.managed:
+    - source: salt://collectd/files/default.conf
+    - user: {{ collectd_settings.user }}
+    - group: {{ collectd_settings.group }}
+    - mode: 644
+    - template: jinja
+    - watch_in:
+      - service: collectd-service
