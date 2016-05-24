@@ -53,6 +53,7 @@
                 'swap',
                 'users'
             ],
+            'extra': {},
             'apache': {
                 'instances' : [ {
                         'name': 'name',
@@ -129,8 +130,16 @@
                 'prefix': 'collectd',
                 'postfix': ''
             },
+            'write_riemann': {
+                'host': salt['grains.get']('fqdn'),
+                'port': 5555,
+                'protocol': 'TCP',
+                'batch': True,
+            },
             'python': {
-                'Globals': 'true'
+                'Globals': 'true',
+                'LogTraces': 'true',
+                'Interactive': 'false'
             },
             'elasticsearch': {
                 'host': 'localhost',
